@@ -85,8 +85,8 @@ export class DataStream{
     }
 
     getDataStream(){
-        
-        return `{"id": ${this.id},"key": "${this.key}","label": "${this.label}", "unitId": ${this.unitId}, "deviceId": ${this.deviceId}, "measurementCount": ${this.measurementCount}, "measurements": "${this.measurements}"}`
+        //nao consegui retornar os measurements
+        return `{"id": ${this.id},"key": "${this.key}","label": "${this.label}", "unitId": ${this.unitId}, "deviceId": ${this.deviceId}, "measurementCount": ${this.measurementCount}}`
     }
 }
 
@@ -114,6 +114,7 @@ export class SensorDevice {
     }
 
     getSensorDevice(){
-        return `{"id": ${this.id},"key": "${this.key}","label": "${this.label}","description": "${this.description}", "streams": "${this.streams}"}`;
+        //nao consegui fazer retornar as streams para a response
+        return `{"id": ${this.id},"key": "${this.key}","label": "${this.label}","description": "${this.description}"}`;
     }
 }

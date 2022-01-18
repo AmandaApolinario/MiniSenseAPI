@@ -14,15 +14,15 @@ As unidades de medida já foram adicionadas, então não é necessário que seja
 
 Já as outras informações que foram adicionadas manualmente também podem ser visualizadas com GET requests, cada uma com endpoints específicos para os dados desejados. Todas as informações detalhadas de como os GET e POST requests funcionam estão abaixo na seção Endpoints. 
 
-## Install
 
-blablabla
-
-## Run the API
+## Executar a API
 
 port: localhost:3000
 
+para rodar o aplicativo, utilize o comando:
+```
 npm run dev
+```
 
 # Endpoints
 
@@ -384,7 +384,12 @@ Para ilustrar a utilização aqui terá um simples exemplo de como utilizar a AP
 *Response*
 
 ```
-
+{
+    "id": 1,
+    "key": "1",
+    "label": "label",
+    "description": "description"
+}
 ```
 
 8. `GET localhost:3000/Stream/amanda/1`
@@ -392,5 +397,12 @@ Para ilustrar a utilização aqui terá um simples exemplo de como utilizar a AP
 *Response*
 
 ```
-
+{
+    "id": 1,
+    "key": "1",
+    "label": "label",
+    "unitId": 1,
+    "deviceId": 1,
+    "measurementCount": 1
+}
 ```
