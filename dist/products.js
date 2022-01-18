@@ -8,7 +8,7 @@ class User {
         this.email = email;
     }
     format() {
-        return `{"username": "${this.username}","email":"${this.email}}"`;
+        return `{"username": "${this.username}","email":"${this.email}"}`;
     }
 }
 exports.User = User;
@@ -66,6 +66,9 @@ class DataStream {
     format() {
         return `{"id": ${this.id},"key": "${this.key}","label": "${this.label}", "unitId": ${this.unitId}, "deviceId": ${this.deviceId}, "measurementCount": ${this.measurementCount}}`;
     }
+    getDataStream() {
+        return `{"id": ${this.id},"key": "${this.key}","label": "${this.label}", "unitId": ${this.unitId}, "deviceId": ${this.deviceId}, "measurementCount": ${this.measurementCount}, "measurements": "${this.measurements}"}`;
+    }
 }
 exports.DataStream = DataStream;
 class SensorDevice {
@@ -81,6 +84,9 @@ class SensorDevice {
     }
     format() {
         return `{"id": ${this.id},"key": "${this.key}","label": "${this.label}","description": "${this.description}"}`;
+    }
+    getSensorDevice() {
+        return `{"id": ${this.id},"key": "${this.key}","label": "${this.label}","description": "${this.description}", "streams": "${this.streams}"}`;
     }
 }
 exports.SensorDevice = SensorDevice;

@@ -20,9 +20,11 @@ function findSensorDevice(User) {
         return usuario.sensorDevice;
     }
 }
+//Consultar unidades de medida
 app.get('/MeasurementUnit', (req, res) => {
     res.status(200).json(products_2.MeasurementUnit);
 });
+//Consultar dispositivos do usuário
 app.get('/SensorDevice/:User', (req, res) => {
     const { User } = req.params;
     const usuario = users.find(username => username.username === User);
@@ -31,7 +33,9 @@ app.get('/SensorDevice/:User', (req, res) => {
     }
     res.status(404).send("Usuario não encontrado");
 });
+//Consultar dispositivo específico com sua chave
 app.get('/SensorDevice/:User/:Key', (req, res) => {
+    //tem q ter o for 5 q eu n fiz
     const { User } = req.params;
     const { Key } = req.params;
     const sensorDevice = findSensorDevice(User);
@@ -39,7 +43,7 @@ app.get('/SensorDevice/:User/:Key', (req, res) => {
         const device = sensorDevice.find(dispositivo => dispositivo.key === Key);
         if (device) {
             //da uma olhada pq provavelmente tem q fazer um format ai
-            res.status(200).json(device);
+            res.status(200).send(JSON.parse(device.getSensorDevice()));
         }
         else {
             res.status(404).send("Sensor device não encontrado");
@@ -47,20 +51,35 @@ app.get('/SensorDevice/:User/:Key', (req, res) => {
     }
     res.status(404).send("Usuario não encontrado");
 });
+//Consultar dados de um stream específico com sua chave
 app.get('/Stream/:User/:Key', (req, res) => {
+    const { User } = req.params;
+    const { Key } = req.params;
+    const sensorDevice = findSensorDevice(User);
+    if (sensorDevice) {
+        for (let i = 0; i < sensorDevice.length; i++) {
+            let streams = sensorDevice[i].streams;
+            let stream = streams.find(key => key.key === Key);
+            if (stream) {
+                res.status(200).send(JSON.parse(stream.getDataStream()));
+            }
+            else {
+                res.status(200).send("medição não encontrada");
+            }
+        }
+        res.status(404).send("Stream não encontrada");
+    }
+    else {
+        res.status(404).send("Sensor device não encontrado");
+    }
 });
-//perguntar se eu posso fazer isso aq
+//Cadastra um usuário
 app.post('/User', (req, res) => {
     const info = req.body;
     users.unshift(new products_1.User(info.username, info.email));
     res.status(200).send(JSON.parse(users[0].format()));
 });
-/*teste
-{
-  "username" = "amanda",
-  "email" = "amanda@gmail"
-}
-*/
+//Registrar um dispositivo
 app.post('/SensorDevice/:User', (req, res) => {
     let sensorDevice = findSensorDevice(req.params.User);
     const info = req.body;
@@ -68,13 +87,11 @@ app.post('/SensorDevice/:User', (req, res) => {
         sensorDevice.unshift(new products_5.SensorDevice(sensorDevice.length + 1, info.label, info.description));
         res.status(200).send(JSON.parse(sensorDevice[0].format()));
     }
+    else {
+        res.status(404).send("Dispositivo não encontrado");
+    }
 });
-/*teste
-{
-  "label": "label",
-  "description": "description"
-}
-*/
+//Registrar stream para um dispositivo
 app.post('/DataStream/:User/SensorDevice/:Key', (req, res) => {
     const { User } = req.params;
     let sensorDevice = findSensorDevice(req.params.User);
@@ -96,12 +113,6 @@ app.post('/DataStream/:User/SensorDevice/:Key', (req, res) => {
         res.status(404).send("Usuario não encontrado");
     }
 });
-/*teste
-{
-  "label": "label",
-  "unitId": 2
-}
-*/
 //publicar medicao em uma stream de um dispositivo
 app.post('/DataStream/:User/:KeyDevice/:KeyStream', (req, res) => {
     const { User } = req.params;
@@ -128,11 +139,5 @@ app.post('/DataStream/:User/:KeyDevice/:KeyStream', (req, res) => {
         res.status(404).send("Usuario não encontrado");
     }
 });
-/*teste
-{
-  "timestamp": 13242,
-  "value": 15.5
-}
-*/
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log('App listening on PORT ${port}'));
