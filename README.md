@@ -406,3 +406,7 @@ Para ilustrar a utilização aqui terá um simples exemplo de como utilizar a AP
     "measurementCount": 1
 }
 ```
+
+## Erros
+
+Não consegui imprimir as streams e measurements nos dois últimos GETs.
